@@ -42,11 +42,17 @@ npm install aws_message_reader
 
 ## Api
 
-### each(callback)
+### each(iterator, callback)
 
-__Arguments__
+Under the hood this function is the [async.each](https://github.com/caolan/async/blob/master/README.md#eacharr-iterator-callback) method. 
 
-* `callback(item)` - A callback which is called with each parsed JSON message. 
+> Applies the function `iterator` to each item in `arr`, in parallel.
+> The `iterator` is called with an item from the list, and a callback for when it
+> has finished. If the `iterator` passes an error to its `callback`, the main
+> `callback` (for the `each` function) is immediately called with the error.
+
+> Note, that since this function applies `iterator` to each item in parallel,
+> there is no guarantee that the iterator functions will complete in order.
 
 __Example__
 
@@ -54,9 +60,16 @@ __Example__
 
 	var messageReader = require('aws_message_reader');
 
-	messageReader(event).each(function(message) {
+	messageReader(event).each(function(message, cb) {
         // message = JSON.parse(event.Records[0].Sns.Message);
-    });
+        cb();
+  }, function(err) {
+    if (err) {
+      return callback(err);
+    }
+
+    // All done!!
+  });
 
 ```
 

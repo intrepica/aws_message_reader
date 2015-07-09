@@ -5,11 +5,17 @@
   "main": "index.js",
   "author": "Tim Fairbrother <tdfairbrother@gmail.com>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intrepica/aws_message_reader"
+  },
   "scripts": {
     "test": "node_modules/.bin/mocha",
     "run": "index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "async": "^1.3.0"
+  },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "^2.2.4",

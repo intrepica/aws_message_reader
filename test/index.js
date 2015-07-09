@@ -2,9 +2,11 @@
 
 var expect = require('expect.js');
 var sinon = require('sinon');
+
 var message = require('../');
 
 var mock = sinon.mock;
+var stub = sinon.stub;
 
 describe('aws_message_reader', function(){ 
 
@@ -66,20 +68,36 @@ describe('aws_message_reader', function(){
 		});	
 
 		describe('.each', function(){ 
-	
-		  it('iterates over each Record object', function() {
-		  	var handler = mock();
-		  	handler.thrice();
-		  	message(event).each(handler);
-		  	handler.verify();
+			describe('when there are no errors', function(){ 		
+			  it('iterates over each Record object', function(done) {
+			  	var handler = mock();
+			  	handler.thrice().yields(null);
+			  	message(event).each(handler, function() {
+			  		handler.verify();
+			  		done();
+			  	});		  	
+			  });
+
+			 	it('calls back with the parsed message', function(done) {		  			  
+			 		var i =0;
+			  	message(event).each(function(message, cb) {
+			  		expect(message.index).to.eql(++i);
+			  		cb();
+			  	}, done);
+			  });
 		  });
 
-		 	it('calls back with the parsed message', function() {		  			  
-		 		var i =0;
-		  	message(event).each(function(message) {
-		  		expect(message.index).to.eql(++i);
-		  	});		  	
-		  });
+			describe('when there is an error', function(){ 		
+			  it('calls the finished callback with the error', function(done) {
+			  	var error = new Error('Boom!');
+			  	var handler = stub();
+			  	handler.yields(error);
+			  	message(event).each(handler, function(err) {
+			  		expect(err).to.eql(error);
+			  		done();
+			  	});		  	
+			  });
+		  });		  
 	  });
 	});
 

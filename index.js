@@ -1,3 +1,5 @@
+var async = require('async');
+
 module.exports = function(message) {	
 
 	if (!message.Records) {
@@ -21,8 +23,8 @@ module.exports = function(message) {
 	});
 
 	return {
-		each: function(callback) {
-			records.forEach(callback);
+		each: function(iterator, done) {
+			async.each(records, iterator, done);
 		}
 	};
 };
