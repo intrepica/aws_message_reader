@@ -1,3 +1,6 @@
+[![Build Status](https://semaphoreci.com/api/v1/projects/c5a63b45-32fa-4ac8-bd2c-87d275aa3b07/483490/badge.svg)](https://semaphoreci.com/lp/aws_message_reader)      
+
+
 Aws Message Reader
 ====================
 
