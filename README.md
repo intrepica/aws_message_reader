@@ -7,7 +7,7 @@ Aws Message Reader
 About
 --------------
 
-Parses an AWS Sns message.
+Parses an AWS Sns message. If the callback triggers an error, the original Aws event (lambda_event) is attached to the error object.
 
 ```
 {
@@ -68,6 +68,9 @@ __Example__
         cb();
   }, function(err) {
     if (err) {
+
+      //err.lambda_event === JSON.stringify(event);
+
       return callback(err);
     }
 

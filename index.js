@@ -24,7 +24,13 @@ module.exports = function(message) {
 
 	return {
 		each: function(iterator, done) {
-			async.each(records, iterator, done);
+			async.each(records, iterator, function(err) {
+				if (err) {
+					err.lambda_event = JSON.stringify(message);
+					return done(err);
+				}				
+				return done();
+			});
 		}
 	};
 };

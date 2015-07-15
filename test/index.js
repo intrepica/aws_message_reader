@@ -88,12 +88,24 @@ describe('aws_message_reader', function(){
 		  });
 
 			describe('when there is an error', function(){ 		
-			  it('calls the finished callback with the error', function(done) {
-			  	var error = new Error('Boom!');
-			  	var handler = stub();
+				var error, handler;
+
+				beforeEach(function() {
+			  	error = new Error('Boom!');
+			  	handler = stub();
 			  	handler.yields(error);
+				});
+
+			  it('calls the finished callback with the error', function(done) {
 			  	message(event).each(handler, function(err) {
 			  		expect(err).to.eql(error);
+			  		done();
+			  	});		  	
+			  });
+
+			  it('error.lambda_event = JSON.strinify(event)', function(done) {
+			  	message(event).each(handler, function(err) {			  		
+			  		expect(err.lambda_event).to.eql(JSON.stringify(event));
 			  		done();
 			  	});		  	
 			  });
