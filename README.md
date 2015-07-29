@@ -1,14 +1,15 @@
-[![Build Status](https://semaphoreci.com/api/v1/projects/c5a63b45-32fa-4ac8-bd2c-87d275aa3b07/483490/badge.svg)](https://semaphoreci.com/lp/aws_message_reader)      
-
-
+   
 Aws Message Reader
 ====================
+
+[![Build Status](https://semaphoreci.com/api/v1/projects/c5a63b45-32fa-4ac8-bd2c-87d275aa3b07/483490/badge.svg)](https://semaphoreci.com/lp/aws_message_reader)   
 
 About
 --------------
 
-Parses an AWS Sns message. If the callback triggers an error, the original Aws event (lambda_event) is attached to the error object.
+Parses an AWS Sns or Dynamodb message. If the callback triggers an error, the original Aws event (lambda_event) is attached to the error object.
 
+Sns message
 ```
 {
   "Records":[
@@ -31,6 +32,33 @@ Parses an AWS Sns message. If the callback triggers an error, the original Aws e
       }
     }
   ]
+}
+```
+
+DynamoDb message (calls back with the NewImage param)
+```
+{
+    "Records": [
+        {
+            "eventID": "xx",
+            "eventName": "MODIFY",
+            "eventVersion": "1.0",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-1",
+            "dynamodb": {
+                "Keys": {
+                  ...                    
+                },
+                "NewImage": {
+                  ...
+                },
+                "SequenceNumber": "xxx",
+                "SizeBytes": xxx,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:..."
+        }
+    ]
 }
 ```
 
