@@ -121,11 +121,11 @@ describe('aws_message_reader', function(){
               var i =0;
               message(event).each(function(message, cb) {
                 i++;
-                expect(message.NewImage.number_index).to.eql(i);
-                expect(message.NewImage.string_index).to.eql(String(i));
+                expect(message.NewImage.number_index).to.equal(i);
+                expect(message.NewImage.string_index).to.equal(String(i));
                 expect(message.NewImage.string_set_index).to.eql([String(i)]);
-                expect(message.OldImage.number_index).to.eql(i);
-                expect(message.OldImage.string_index).to.eql(String(i));
+                expect(message.OldImage.number_index).to.equal(i);
+                expect(message.OldImage.string_index).to.equal(String(i));
                 expect(message.OldImage.string_set_index).to.eql([String(i)]);
                 cb();
               }, done);

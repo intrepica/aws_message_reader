@@ -61,8 +61,7 @@ module.exports = function(message) {
       parsedObject[imageKey] = {};
       Object.keys(record.dynamodb[imageKey]).forEach(function(itemKey) {
         var item = record.dynamodb[imageKey][itemKey];
-        var typeKey = Object.keys(item)[0];
-        parsedObject[imageKey][itemKey] = item[typeKey];
+        parsedObject[imageKey][itemKey] = parseDynamoKey(item);
       });
     }); 
 
@@ -70,8 +69,7 @@ module.exports = function(message) {
   }
 
 
-  function parseDynamoKey() {
-    var item = record.dynamodb[imageKey][itemKey];
+  function parseDynamoKey(item) {    
     var typeKey = Object.keys(item)[0];
     var value; 
     
