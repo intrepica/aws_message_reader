@@ -86,7 +86,10 @@ describe('aws_message_reader', function(){
           'eventSource':'aws:dynamodb',
           'dynamodb':{
             'OldImage': dynamoTypes,
-            'NewImage': dynamoTypes
+            'NewImage': dynamoTypes,
+            'SequenceNumber': 'xxx',
+            'SizeBytes': 416,
+            'StreamViewType': 'NEW_IMAGE'            
           }          
         });
       });      
@@ -127,6 +130,9 @@ describe('aws_message_reader', function(){
                 expect(message.OldImage.number_index).to.equal(i);
                 expect(message.OldImage.string_index).to.equal(String(i));
                 expect(message.OldImage.string_set_index).to.eql([String(i)]);
+                expect(message.SequenceNumber).to.equal('xxx');
+                expect(message.SizeBytes).to.equal(416);
+                expect(message.StreamViewType).to.equal('NEW_IMAGE');
                 cb();
               }, done);
             });
