@@ -55,7 +55,33 @@ module.exports = function(message) {
       throw new Error('Message invalid - Record requires dynamodb');   
     }
     
-    return record.dynamodb.NewImage;        
+    var parsedObject = {};
+
+    Object.keys(record.dynamodb).forEach(function(imageKey) {
+      parsedObject[imageKey] = {};
+      Object.keys(record.dynamodb[imageKey]).forEach(function(itemKey) {
+        var item = record.dynamodb[imageKey][itemKey];
+        var typeKey = Object.keys(item)[0];
+        parsedObject[imageKey][itemKey] = item[typeKey];
+      });
+    }); 
+
+    return parsedObject;        
+  }
+
+
+  function parseDynamoKey() {
+    var item = record.dynamodb[imageKey][itemKey];
+    var typeKey = Object.keys(item)[0];
+    var value; 
+    
+    if (typeKey == 'N') {
+      value = parseInt(item[typeKey]);
+    } else {
+      value = item[typeKey];
+    }
+
+    return value;    
   }
 
 };

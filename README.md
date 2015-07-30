@@ -9,7 +9,8 @@ About
 
 Parses an AWS Sns or Dynamodb message. If the callback triggers an error, the original Aws event (lambda_event) is attached to the error object.
 
-Sns message
+##Sns message
+
 ```
 {
   "Records":[
@@ -35,7 +36,11 @@ Sns message
 }
 ```
 
-DynamoDb message (calls back with the NewImage param)
+Calls back with Records[0].Message parsed json
+
+
+## DynamoDb message
+
 ```
 {
     "Records": [
@@ -46,11 +51,27 @@ DynamoDb message (calls back with the NewImage param)
             "eventSource": "aws:dynamodb",
             "awsRegion": "us-east-1",
             "dynamodb": {
-                "Keys": {
-                  ...                    
+                "OldImage": {
+                  my_key: {
+                    N: '1'
+                  },
+                  my_string_key: {
+                    S: 'SOME STRING'
+                  },
+                  my_string_set_key: {
+                    SS: ['SOME STRING']
+                  }
                 },
                 "NewImage": {
-                  ...
+                  my_key: {
+                    N: 1
+                  },
+                  my_string_key: {
+                    S: 'SOME STRING'
+                  },
+                  my_string_set_key: {
+                    SS: ['SOME STRING']
+                  }
                 },
                 "SequenceNumber": "xxx",
                 "SizeBytes": xxx,
@@ -62,6 +83,21 @@ DynamoDb message (calls back with the NewImage param)
 }
 ```
 
+Calls back with (parses the Numer type only)
+```
+{
+    "OldImage": {
+      my_key:1,
+      my_string_key: 'SOME STRING',
+      my_string_set_key:['SOME STRING']
+    },
+    "NewImage": {
+      my_key:1,
+      my_string_key: 'SOME STRING',
+      my_string_set_key:['SOME STRING']                 
+    }
+}
+```
 
 Setup
 --------------

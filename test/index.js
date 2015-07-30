@@ -71,16 +71,23 @@ describe('aws_message_reader', function(){
         'Records':[]        
       };
       [1,2,3].forEach(function(index) {
-        var message = {
-          index:index
+        var dynamoTypes = {
+          number_index: {
+            N: String(index)
+          },
+          string_index: {
+            S: String(index)
+          },
+          string_set_index: {
+            SS: [String(index)]
+          }
         };
         event.Records.push({
           'eventSource':'aws:dynamodb',
           'dynamodb':{
-            'NewImage': {
-              index:index
-            }            
-          }
+            'OldImage': dynamoTypes,
+            'NewImage': dynamoTypes
+          }          
         });
       });      
     }    
@@ -113,7 +120,13 @@ describe('aws_message_reader', function(){
             it('calls back with the parsed message', function(done) {             
               var i =0;
               message(event).each(function(message, cb) {
-                expect(message.index).to.eql(++i);
+                i++;
+                expect(message.NewImage.number_index).to.eql(i);
+                expect(message.NewImage.string_index).to.eql(String(i));
+                expect(message.NewImage.string_set_index).to.eql([String(i)]);
+                expect(message.OldImage.number_index).to.eql(i);
+                expect(message.OldImage.string_index).to.eql(String(i));
+                expect(message.OldImage.string_set_index).to.eql([String(i)]);
                 cb();
               }, done);
             });
