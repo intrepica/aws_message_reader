@@ -15,11 +15,7 @@ describe('aws_message_reader', function(){
       return function() { 
         message(event); 
       };
-    }   
-
-    it('validates Records property', function() {
-      expect(invocation({})).to.throwError(/Message invalid - requires Records/);
-    });
+    }       
 
     it('validates Records type', function() {
       expect(invocation({ Records:{} })).to.throwError(/Message invalid - Records must be an array/);
@@ -44,6 +40,23 @@ describe('aws_message_reader', function(){
         expect(invocation({ Records:[{ eventSource:'aws:dynamodb' }] })).to.throwError(/Message invalid - Record requires dynamodb/);
       });
     });
+
+    describe('when the message doesnt contain a Record property', function(){   
+      it('calls the iterator with the whole message', function(done) {
+        var event = { message:'Test' };      
+        message(event).each(function(message, cb) {
+          expect(message).to.eql(event);          
+          done();
+        });  
+      });
+
+      it('iterator callback invokes finished callback', function(done) {
+        var event = { message:'Test' };      
+        message(event).each(function(message, cb) {
+          cb();
+        }, done);
+      });     
+    });    
   });
 
   describe('with a valid message', function(){ 

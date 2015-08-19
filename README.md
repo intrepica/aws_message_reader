@@ -1,13 +1,9 @@
    
-Aws Message Reader
-====================
-
-[![Build Status](https://semaphoreci.com/api/v1/projects/c5a63b45-32fa-4ac8-bd2c-87d275aa3b07/483490/badge.svg)](https://semaphoreci.com/lp/aws_message_reader)   
-
-About
---------------
+#Aws Message Reader
 
 Parses an AWS Sns or Dynamodb message. If the callback triggers an error, the original Aws event (lambda_event) is attached to the error object.
+
+[![Build Status](https://semaphoreci.com/api/v1/projects/c5a63b45-32fa-4ac8-bd2c-87d275aa3b07/483490/badge.svg)](https://semaphoreci.com/lp/aws_message_reader)   
 
 ##Sns message
 
@@ -37,7 +33,6 @@ Parses an AWS Sns or Dynamodb message. If the callback triggers an error, the or
 ```
 
 Calls back with Records[0].Message parsed json
-
 
 ## DynamoDb message
 
@@ -99,8 +94,7 @@ Calls back with (parses the Numer type only)
 }
 ```
 
-Setup
---------------
+#Setup
 
 ```sh
 npm install aws_message_reader
@@ -121,7 +115,6 @@ Under the hood this function is the [async.each](https://github.com/caolan/async
 > Note, that since this function applies `iterator` to each item in parallel,
 > there is no guarantee that the iterator functions will complete in order.
 
-__Example__
 
 ```js
 

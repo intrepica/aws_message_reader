@@ -3,7 +3,13 @@ var async = require('async');
 module.exports = function(message) {  
 
   if (!message.Records) {
-    throw new Error('Message invalid - requires Records');  
+    // If Records is not a property
+    return {
+      // Call the iterator with the whole message
+      each: function(iterator, done) {
+        iterator(message, done);
+      }
+    }
   }
 
   if (!(message.Records instanceof Array)) {
